@@ -1,0 +1,10 @@
+filelock
+uiautomation
+pytest
+pytest-asyncio
+playwright
+pyautogui
+pillow
+opentelemetry-api
+opentelemetry-sdk
+opentelemetry-exporter-otlp

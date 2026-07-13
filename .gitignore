@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.benchmarks/
+
+# State files
+shadow_dom.json
+shadow_dom.json.lock
+integration_shadow_dom.json
+integration_shadow_dom.json.lock
+integration_shadow_dom.json.tmp
+shadow_dom.json.tmp
+test_file.txt
