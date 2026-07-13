@@ -12,6 +12,15 @@ license = { text = "PolyForm Noncommercial 1.0.0" }
 authors = [
     { name = "Axton Carroll" }
 ]
+keywords = [
+    "automation",
+    "playwright",
+    "win32",
+    "opentelemetry",
+    "desktop-automation",
+    "rpa",
+    "agent-operating-system"
+]
 dependencies = [
     "filelock",
     "uiautomation",
