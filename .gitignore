@@ -12,3 +12,9 @@ integration_shadow_dom.json.lock
 integration_shadow_dom.json.tmp
 shadow_dom.json.tmp
 test_file.txt
+
+# Python packaging & build artifacts
+*.egg-info/
+dist/
+build/
+
