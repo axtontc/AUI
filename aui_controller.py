@@ -3,6 +3,7 @@ import json
 import os
 import time
 from typing import Any, Dict, Optional
+from playwright.async_api import Page
 
 from telemetry import get_tracer
 
@@ -13,7 +14,7 @@ class AUIController:
     Resolves native dialog locations from shadow_dom.json and triggers clicks/typing.
     """
 
-    def __init__(self, shadow_dom_path: str = "shadow_dom.json"):
+    def __init__(self, shadow_dom_path: str = "shadow_dom.json") -> None:
         self.shadow_dom_path = os.path.abspath(shadow_dom_path)
         self.lock_path = self.shadow_dom_path + ".lock"
 
@@ -33,7 +34,9 @@ class AUIController:
                     with open(self.shadow_dom_path, "r", encoding="utf-8") as f:
                         data = json.load(f)
                         span.set_attribute("status", "success")
-                        return data
+                        if isinstance(data, dict):
+                            return data
+                        return {}
             except (Timeout, json.JSONDecodeError, FileNotFoundError) as e:
                 span.set_attribute("status", "failed")
                 span.record_exception(e)
@@ -99,21 +102,21 @@ class AUIController:
             span.set_attribute("match_found", False)
             return None
 
-    def physical_click(self, x: int, y: int, button: str = "left", clicks: int = 1):
+    def physical_click(self, x: int, y: int, button: str = "left", clicks: int = 1) -> None:
         """Executes a PyAutoGUI mouse click at exact screen coordinates."""
         import pyautogui
 
         pyautogui.FAILSAFE = False
         pyautogui.click(x=x, y=y, button=button, clicks=clicks)
 
-    def physical_type(self, text: str):
+    def physical_type(self, text: str) -> None:
         """Executes a PyAutoGUI typewrite with character intervals."""
         import pyautogui
 
         pyautogui.FAILSAFE = False
         pyautogui.write(text, interval=0.01)
 
-    def physical_hotkey(self, keys_str: str):
+    def physical_hotkey(self, keys_str: str) -> None:
         """Executes a PyAutoGUI hotkey sequence."""
         import pyautogui
 
@@ -136,7 +139,7 @@ class AUIController:
             span.set_attribute("status", "success")
             return True
 
-    async def handle_file_chooser(self, page, click_target: str, file_path: str) -> bool:
+    async def handle_file_chooser(self, page: Page, click_target: str, file_path: str) -> bool:
         """
         Playwright Hook connection wrapper.
         Sets up an expectation hook for a native FileChooser dialog,
@@ -147,7 +150,7 @@ class AUIController:
             span.set_attribute("click_target", click_target)
             span.set_attribute("file_path", file_path)
 
-            async def wait_and_fill_dialog():
+            async def wait_and_fill_dialog() -> bool:
                 timeout = 10.0
                 start = time.time()
                 while time.time() - start < timeout:
@@ -184,4 +187,4 @@ class AUIController:
 
             success = await task
             span.set_attribute("status", "success" if success else "failed")
-            return success
+            return bool(success)

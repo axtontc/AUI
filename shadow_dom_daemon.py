@@ -4,7 +4,7 @@ import logging
 import multiprocessing
 import os
 import time
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from telemetry import get_tracer
 
@@ -61,13 +61,13 @@ class ShadowDOMDaemon:
     to a shared JSON file using a cross-process lock.
     """
 
-    def __init__(self, output_path: str = "shadow_dom.json"):
+    def __init__(self, output_path: str = "shadow_dom.json") -> None:
         self.output_path = os.path.abspath(output_path)
         self.lock_path = self.output_path + ".lock"
         self.running = False
-        self.listener_process = None
+        self.listener_process: Any = None
 
-    def dump_state(self, state: Dict[str, Any]):
+    def dump_state(self, state: Dict[str, Any]) -> None:
         """Writes current UI tree state to output_path using a file lock."""
         from filelock import FileLock, Timeout
 
@@ -98,27 +98,27 @@ class ShadowDOMDaemon:
                 logger.error(f"[!] Error dumping state: {e}")
 
     @staticmethod
-    def _listener_loop(output_path: str, lock_path: str):
+    def _listener_loop(output_path: str, lock_path: str) -> None:
         """Core listener loop that runs in a background process."""
         from filelock import FileLock
 
         tracer = get_tracer()
 
         logger.info("ETW/Win32 ShadowDOM Daemon Loop Started.")
-        known_state = {}
+        known_state: Dict[str, Any] = {}
 
         while True:
             try:
                 with tracer.start_as_current_span("shadow_dom_daemon.scan") as span:
                     windows = {}
 
-                    def foreach_window(hwnd, lParam):
+                    def foreach_window(hwnd: int, lParam: int) -> bool:
                         if IsWindowVisible(hwnd):
                             details = get_window_details(hwnd)
                             if details["text"] and details["rect"][2] > details["rect"][0]:
                                 children = []
 
-                                def foreach_child(hwnd_child, lParam_child):
+                                def foreach_child(hwnd_child: int, lParam_child: int) -> bool:
                                     child_details = get_window_details(hwnd_child)
                                     children.append(
                                         {
@@ -164,7 +164,7 @@ class ShadowDOMDaemon:
                 logger.error(f"Daemon error: {e}")
                 time.sleep(1)
 
-    def start(self):
+    def start(self) -> None:
         """Starts the background listening process."""
         self.running = True
         self.listener_process = multiprocessing.Process(
@@ -174,7 +174,7 @@ class ShadowDOMDaemon:
         self.listener_process.start()
         logger.info(f"AUI Daemon started (writing to {self.output_path})")
 
-    def stop(self):
+    def stop(self) -> None:
         """Stops the daemon and cleans up lock files."""
         self.running = False
         if self.listener_process:
