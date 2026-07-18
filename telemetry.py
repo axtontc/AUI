@@ -8,6 +8,7 @@ from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExport
 # Global tracer instance
 _tracer = None
 
+
 def get_tracer(service_name: str = "AUI_Service") -> trace.Tracer:
     """Retrieves or initializes a globally configured OpenTelemetry tracer."""
     global _tracer
@@ -22,6 +23,7 @@ def get_tracer(service_name: str = "AUI_Service") -> trace.Tracer:
         try:
             # We dynamically import the OTLP exporter to keep core startup lightweight
             from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+
             otlp_exporter = OTLPSpanExporter(endpoint=otlp_endpoint, insecure=True)
             provider.add_span_processor(BatchSpanProcessor(otlp_exporter))
         except Exception:

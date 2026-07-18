@@ -10,10 +10,12 @@ def test_win32_children():
     GetWindowRect = ctypes.windll.user32.GetWindowRect
 
     class RECT(ctypes.Structure):
-        _fields_ = [("left", ctypes.c_long),
-                    ("top", ctypes.c_long),
-                    ("right", ctypes.c_long),
-                    ("bottom", ctypes.c_long)]
+        _fields_ = [
+            ("left", ctypes.c_long),
+            ("top", ctypes.c_long),
+            ("right", ctypes.c_long),
+            ("bottom", ctypes.c_long),
+        ]
 
     hwnd = FindWindow(None, "Untitled - Notepad")
     if not hwnd:
@@ -23,6 +25,7 @@ def test_win32_children():
     print(f"Notepad HWND: {hwnd}")
 
     children = []
+
     def foreach_child(hwnd_child, lParam):
         class_name = ctypes.create_unicode_buffer(256)
         GetClassName(hwnd_child, class_name, 256)
@@ -34,12 +37,14 @@ def test_win32_children():
         rect = RECT()
         GetWindowRect(hwnd_child, ctypes.byref(rect))
 
-        children.append({
-            "hwnd": hwnd_child,
-            "class": class_name.value,
-            "text": text_buff.value,
-            "rect": (rect.left, rect.top, rect.right, rect.bottom)
-        })
+        children.append(
+            {
+                "hwnd": hwnd_child,
+                "class": class_name.value,
+                "text": text_buff.value,
+                "rect": (rect.left, rect.top, rect.right, rect.bottom),
+            }
+        )
         return True
 
     EnumChildWindows(hwnd, EnumWindowsProc(foreach_child), 0)
@@ -47,6 +52,7 @@ def test_win32_children():
     print("Children of Notepad:")
     for child in children:
         print(f" - Class: {child['class']} | Text: {child['text']} | Rect: {child['rect']}")
+
 
 if __name__ == "__main__":
     test_win32_children()

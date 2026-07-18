@@ -12,6 +12,7 @@ class AUIController:
     Executive router that coordinates browser-use and desktop automation.
     Resolves native dialog locations from shadow_dom.json and triggers clicks/typing.
     """
+
     def __init__(self, shadow_dom_path: str = "shadow_dom.json"):
         self.shadow_dom_path = os.path.abspath(shadow_dom_path)
         self.lock_path = self.shadow_dom_path + ".lock"
@@ -22,6 +23,7 @@ class AUIController:
             return {}
 
         from filelock import FileLock, Timeout
+
         lock = FileLock(self.lock_path)
         tracer = get_tracer()
 
@@ -83,7 +85,7 @@ class AUIController:
                             span.set_attribute("match_found", True)
                             return {
                                 "x": int(rect[0] + (rect[2] - rect[0]) / 2),
-                                "y": int(rect[1] + (rect[3] - rect[1]) / 2)
+                                "y": int(rect[1] + (rect[3] - rect[1]) / 2),
                             }
                     for el in win.get("elements", []):
                         if element_name_query.lower() in el.get("name", "").lower():
@@ -92,28 +94,31 @@ class AUIController:
                                 span.set_attribute("match_found", True)
                                 return {
                                     "x": int(rect[0] + (rect[2] - rect[0]) / 2),
-                                    "y": int(rect[1] + (rect[3] - rect[1]) / 2)
+                                    "y": int(rect[1] + (rect[3] - rect[1]) / 2),
                                 }
             span.set_attribute("match_found", False)
             return None
 
-    def physical_click(self, x: int, y: int, button: str = 'left', clicks: int = 1):
+    def physical_click(self, x: int, y: int, button: str = "left", clicks: int = 1):
         """Executes a PyAutoGUI mouse click at exact screen coordinates."""
         import pyautogui
+
         pyautogui.FAILSAFE = False
         pyautogui.click(x=x, y=y, button=button, clicks=clicks)
 
     def physical_type(self, text: str):
         """Executes a PyAutoGUI typewrite with character intervals."""
         import pyautogui
+
         pyautogui.FAILSAFE = False
         pyautogui.write(text, interval=0.01)
 
     def physical_hotkey(self, keys_str: str):
         """Executes a PyAutoGUI hotkey sequence."""
         import pyautogui
+
         pyautogui.FAILSAFE = False
-        keys = [k.strip() for k in keys_str.split(',')]
+        keys = [k.strip() for k in keys_str.split(",")]
         pyautogui.hotkey(*keys)
 
     def click_element(self, window_title: str, element_name: str) -> bool:

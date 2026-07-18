@@ -9,6 +9,7 @@ def test_win32():
     IsWindowVisible = ctypes.windll.user32.IsWindowVisible
 
     titles = []
+
     def foreach_window(hwnd, lParam):
         if IsWindowVisible(hwnd):
             length = GetWindowTextLength(hwnd)
@@ -22,6 +23,7 @@ def test_win32():
     for t in titles[:20]:
         if t:
             print(f" - {t}")
+
 
 if __name__ == "__main__":
     test_win32()
