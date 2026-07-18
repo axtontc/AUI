@@ -3,6 +3,7 @@ import json
 import os
 import time
 from typing import Any, Dict, Optional
+
 from playwright.async_api import Page
 
 from telemetry import get_tracer
