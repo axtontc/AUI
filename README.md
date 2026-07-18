@@ -50,13 +50,13 @@ These tools operate in isolated sandboxes. The OS desktop is invisible to them.
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│                    Your AI Agent                     │
-│                                                      │
-│   from aui_controller import AUIController           │
-│   aui = AUIController()                              │
+│                    Your AI Agent                    │
+│                                                     │
+│   from aui_controller import AUIController          │
+│   aui = AUIController()                             │
 │   aui.click_element("Open", "Open")  # Native OS!   │
-│                                                      │
-└───────────────┬──────────────────────────────────────┘
+│                                                     │
+└───────────────┬─────────────────────────────────────┘
                 │
     ┌───────────▼───────────┐
     │   AUI Controller API  │  ← Single entry point
