@@ -9,7 +9,7 @@
 [![Status](https://img.shields.io/badge/Status-Stable%20v1.0-2ea043?style=for-the-badge)](https://github.com/axtontc/AUI/releases)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![OpenTelemetry](https://img.shields.io/badge/Telemetry-OpenTelemetry-F5A800?style=for-the-badge&logo=opentelemetry&logoColor=white)](https://opentelemetry.io)
-[![License](https://img.shields.io/badge/License-PolyForm%20NC-DA3633?style=for-the-badge)](LICENSE)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue?style=for-the-badge)](LICENSE)
 [![CI](https://img.shields.io/github/actions/workflow/status/axtontc/AUI/ci.yml?branch=main&style=for-the-badge&label=CI)](https://github.com/axtontc/AUI/actions)
 
 </div>

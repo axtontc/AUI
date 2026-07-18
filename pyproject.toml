@@ -8,7 +8,7 @@ version = "1.0.0"
 description = "AOS Unified UI Control System (Playwright, Win32, PyAutoGUI)"
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "PolyForm Noncommercial 1.0.0" }
+license = { text = "Apache-2.0" }
 authors = [
     { name = "Axton Carroll" }
 ]
